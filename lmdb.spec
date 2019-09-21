@@ -14,9 +14,14 @@ Source1:        lmdb.pc.in
 Patch0: lmdb-make.patch
 Patch1: lmdb-s390-check.patch
 
-BuildRequires: make
-BuildRequires: gcc
+%if (0%{?rhel} > 0 && 0%{?rhel} <= 7)
+# Addresses python36- versus python3- dependencies
+BuildRequires: epel-rpm-macros
+%endif
+
 BuildRequires: doxygen
+BuildRequires: gcc
+BuildRequires: make
 
 %description
 LMDB is an ultra-fast, ultra-compact key-value embedded data
