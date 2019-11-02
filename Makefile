@@ -7,6 +7,8 @@ LANG=C
 
 MOCKS+=epel-8-x86_64
 
+MOCKCFGS+=samba4repo-8-x86_64
+
 #REPOBASEDIR=/var/www/linux/samba4repo
 REPOBASEDIR:=`/bin/pwd`/../samba4repo
 
@@ -49,8 +51,6 @@ install:: $(MOCKS)
 	    case $$repo in \
 		*-7-x86_64) yumrelease=el/7; yumarch=x86_64; ;; \
 		*-8-x86_64) yumrelease=el/8; yumarch=x86_64; ;; \
-		*-29-x86_64) yumrelease=fedora/29; yumarch=x86_64; ;; \
-		*-f29-x86_64) yumrelease=fedora/29; yumarch=x86_64; ;; \
 		*-31-x86_64) yumrelease=fedora/31; yumarch=x86_64; ;; \
 		*-f31-x86_64) yumrelease=fedora/31; yumarch=x86_64; ;; \
 		*) echo "Unrecognized relese for $$repo, exiting" >&2; exit 1; ;; \
@@ -59,10 +59,14 @@ install:: $(MOCKS)
 	    srpmdir=$(REPOBASEDIR)/$$yumrelease/SRPMS; \
 	    echo "Pushing SRPMS to $$srpmdir"; \
 	    rsync -av $$repo/*.src.rpm --no-owner --no-group $$repo/*.src.rpm $$srpmdir/. || exit 1; \
-	    createrepo -q --update $$srpmdir/.; \
+	    createrepo -q $$srpmdir/.; \
 	    echo "Pushing RPMS to $$rpmdir"; \
 	    rsync -av $$repo/*.rpm --exclude=*.src.rpm --exclude=*debuginfo*.rpm --no-owner --no-group $$repo/*.rpm $$rpmdir/. || exit 1; \
-	    createrepo -q --update $$rpmdir/.; \
+	    createrepo -q $$rpmdir/.; \
+	done
+	@for repo in $(MOCKCFGS); do \
+	    echo "Touching $(PWD)/../$$repo.cfg"; \
+	    /bin/touch --no-dereference $(PWD)/../$$repo.cfg; \
 	done
 
 clean::
