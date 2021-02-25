@@ -5,9 +5,10 @@
 # Assure that sorting is case sensitive
 LANG=C
 
-MOCKS+=epel-8-x86_64
+#MOCKS+=epel-8-x86_64
+MOCKS+=amazonlinux-2-x86_64
 
-MOCKCFGS+=samba4repo-8-x86_64
+#MOCKCFGS+=$(MOCKS)
 
 #REPOBASEDIR=/var/www/linux/samba4repo
 REPOBASEDIR:=`/bin/pwd`/../samba4repo
@@ -55,10 +56,12 @@ install:: $(MOCKS)
 	@for repo in $(MOCKS); do \
 	    echo Installing $$repo; \
 	    case $$repo in \
+		amazonlinux-2-x86_64) yumrelease=amazon/2; yumarch=x86_64; ;; \
+		*-amz2-x86_64) yumrelease=amazon/2; yumarch=x86_64; ;; \
 		*-7-x86_64) yumrelease=el/7; yumarch=x86_64; ;; \
 		*-8-x86_64) yumrelease=el/8; yumarch=x86_64; ;; \
-		*-31-x86_64) yumrelease=fedora/31; yumarch=x86_64; ;; \
-		*-f31-x86_64) yumrelease=fedora/31; yumarch=x86_64; ;; \
+		*-34-x86_64) yumrelease=fedora/34; yumarch=x86_64; ;; \
+		*-f34-x86_64) yumrelease=fedora/34; yumarch=x86_64; ;; \
 		*-rawhide-x86_64) yumrelease=fedora/rawhide; yumarch=x86_64; ;; \
 		*) echo "Unrecognized release for $$repo, exiting" >&2; exit 1; ;; \
 	    esac; \

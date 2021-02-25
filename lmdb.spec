@@ -3,7 +3,8 @@
 
 Name:           lmdb
 Version:        0.9.22
-Release:        2%{?dist}
+#Release:        2%%{?dist}
+Release:        0.2%{?dist}
 Summary:        Memory-mapped key-value database
 
 License:        OpenLDAP
@@ -14,14 +15,9 @@ Source1:        lmdb.pc.in
 Patch0: lmdb-make.patch
 Patch1: lmdb-s390-check.patch
 
-%if 0%{?rhel} > 0
-# Addresses python36- versus python3- dependencies
-BuildRequires: epel-rpm-macros
-%endif
-
-BuildRequires: doxygen
-BuildRequires: gcc
 BuildRequires: make
+BuildRequires: gcc
+BuildRequires: doxygen
 
 %description
 LMDB is an ultra-fast, ultra-compact key-value embedded data

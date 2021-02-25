@@ -1,7 +1,7 @@
 lmdb-0.9.x-srpm
 ===============
 
-SRPM building tools for lmdb runing Samba 4 on RHEL 8.
+SRPM building tools for lmdb runing Samba 4 on Amazon Linux 2
 
 This tool taken from the EPEL 7 release.
 
