@@ -5,8 +5,8 @@
 # Assure that sorting is case sensitive
 LANG=C
 
-#MOCKS+=centos-stream+epel-8-x86_64
-MOCKS+=amazonlinux-2-x86_64
+MOCKS+=centos-stream+epel-8-x86_64
+#MOCKS+=amazonlinux-2-x86_64
 
 #MOCKCFGS+=$(MOCKS)
 
