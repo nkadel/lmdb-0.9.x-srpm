@@ -2,9 +2,9 @@
 %global archive_path libraries/lib%{name}
 
 Name:           lmdb
-Version:        0.9.22
-#Release:        2%%{?dist}
-Release:        0.2%{?dist}
+Version:        0.9.24
+#Release:        3%%{?dist}
+Release:        3.1%{?dist}
 Summary:        Memory-mapped key-value database
 
 License:        OpenLDAP
