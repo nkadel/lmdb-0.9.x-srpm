@@ -42,15 +42,15 @@ build:: src.rpm
 		--rebuild $?
 
 .PHONY: $(MOCKS)
-$(MOCKS):: src.rpm
+$(MOCKS)::
 	@if [ -e $@ -a -n "`find $@ -name \*.rpm`" ]; then \
 		echo "	Skipping RPM populated $@"; \
 	else \
 		echo "Actally building $? in $@"; \
 		rm -rf $@; \
 		mock -q -r $(PWD)/../$@.cfg \
-		     --resultdir=$(PWD)/$@ \
-		     $?; \
+		    --sources $(PWD) --spec $(SPEC) \
+		    --resultdir=$(PWD)/$@; \
 	fi
 
 mock:: $(MOCKS)
