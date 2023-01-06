@@ -5,8 +5,11 @@
 # Assure that sorting is case sensitive
 LANG=C
 
-#MOCKS+=epel-8-x86_64
-MOCKS+=amazonlinux-2-x86_64
+# RHEL did not publish -devel package until very recently
+#MOCKS+=centos-stream+epel-8-x86_64
+#MOCKS+=centos-stream+epel-9-x86_64
+
+#MOCKS+=amazonlinux-2-x86_64
 
 #MOCKCFGS+=$(MOCKS)
 
@@ -39,15 +42,15 @@ build:: src.rpm
 		--rebuild $?
 
 .PHONY: $(MOCKS)
-$(MOCKS):: src.rpm
-	@if [ -e $@ -a -n "`find $@ -name \*.rpm`" ]; then \
+$(MOCKS)::
+	@if [ -e $@ -a -n "`find $@ -name '*.rpm' ! -name '*.src.rpm' 2>/dev/null`" ]; then \
 		echo "	Skipping RPM populated $@"; \
 	else \
 		echo "Actally building $? in $@"; \
 		rm -rf $@; \
 		mock -q -r $(PWD)/../$@.cfg \
-		     --resultdir=$(PWD)/$@ \
-		     $?; \
+		    --sources $(PWD) --spec $(SPEC) \
+		    --resultdir=$(PWD)/$@; \
 	fi
 
 mock:: $(MOCKS)
@@ -58,10 +61,10 @@ install:: $(MOCKS)
 	    case $$repo in \
 		amazonlinux-2-x86_64) yumrelease=amazon/2; yumarch=x86_64; ;; \
 		*-amz2-x86_64) yumrelease=amazon/2; yumarch=x86_64; ;; \
-		*-7-x86_64) yumrelease=el/7; yumarch=x86_64; ;; \
 		*-8-x86_64) yumrelease=el/8; yumarch=x86_64; ;; \
-		*-34-x86_64) yumrelease=fedora/34; yumarch=x86_64; ;; \
-		*-f34-x86_64) yumrelease=fedora/34; yumarch=x86_64; ;; \
+		*-9-x86_64) yumrelease=el/9; yumarch=x86_64; ;; \
+		*-37-x86_64) yumrelease=fedora/37; yumarch=x86_64; ;; \
+		*-f37-x86_64) yumrelease=fedora/37; yumarch=x86_64; ;; \
 		*-rawhide-x86_64) yumrelease=fedora/rawhide; yumarch=x86_64; ;; \
 		*) echo "Unrecognized release for $$repo, exiting" >&2; exit 1; ;; \
 	    esac; \
